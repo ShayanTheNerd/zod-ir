@@ -1,0 +1,41 @@
+{
+  "name": "zod-ir",
+  "version": "1.0.0",
+  "description": "Essential Zod validators for Iranian specific data (National Code, Card Number, Mobile)",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "build": "tsup",
+    "prepublishOnly": "npm run test && npm run build"
+  },
+  "keywords": [
+    "zod",
+    "iran",
+    "validation",
+    "melli-code",
+    "react-hook-form"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0",
+    "zod": "^3.0.0"
+  },
+  "peerDependencies": {
+    "zod": ">=3"
+  }
+}
