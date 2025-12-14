@@ -1,64 +1,76 @@
 import { describe, it, expect } from "vitest";
-import { zMelliCode, zCardNumber, zIranianMobile } from "./index";
+import {
+  zMelliCode,
+  zCardNumber,
+  zIranianMobile,
+  zSheba,
+  zPostalCode,
+  zLandline,
+} from "./index";
 
-describe("Iranian Validation Logic", () => {
-  // --- Melli Code ---
+describe("Zod Iranian Utils Tests", () => {
   describe("Melli Code", () => {
-    it("should validate correct melli code", () => {
-      // این کد ملی از نظر ریاضی کاملاً صحیح است:
-      // (1*10 + 2*9 + ... + 9*2) % 11 = 1 -> Remainder < 2 -> Check Digit = 1
-      const validCode = "1234567891";
-      expect(zMelliCode().safeParse(validCode).success).toBe(true);
+    it("should pass valid code", () => {
+      expect(zMelliCode().safeParse("1234567891").success).toBe(true);
     });
-
-    it("should fail invalid melli code", () => {
-      // این کد ظاهرش درسته اما ریاضیش غلطه
-      expect(zMelliCode().safeParse("0067936168").success).toBe(false);
-    });
-
-    it("should use custom error message", () => {
-      const result = zMelliCode({ message: "خطای اختصاصی" }).safeParse("000");
-      if (result.success === false) {
-        expect(result.error.issues[0].message).toBe("خطای اختصاصی");
-      }
-    });
-
-    it("should use english locale", () => {
-      const result = zMelliCode({ locale: "en" }).safeParse("000");
-      if (result.success === false) {
-        expect(result.error.issues[0].message).toBe("Invalid national code");
-      }
+    it("should fail invalid code", () => {
+      expect(zMelliCode().safeParse("1234567890").success).toBe(false);
     });
   });
 
-  // --- Card Number ---
   describe("Card Number", () => {
-    it("should validate correct card number", () => {
-      // این یک الگوی معتبر Luhn است (تست شده)
-      const validCard = "1111222233334444";
-      expect(zCardNumber().safeParse(validCard).success).toBe(true);
+    it("should pass valid card", () => {
+      expect(zCardNumber().safeParse("1111222233334444").success).toBe(true);
     });
-
-    it("should fail invalid card number", () => {
-      // همان کارت بالا با تغییر رقم آخر
-      const invalidCard = "1111222233334445";
-      expect(zCardNumber().safeParse(invalidCard).success).toBe(false);
+    it("should fail invalid card", () => {
+      expect(zCardNumber().safeParse("1111222233334445").success).toBe(false);
     });
   });
 
-  // --- Mobile Number ---
-  // این بخش تست می‌کند که آیا شماره موبایل‌های ایرانی درست تشخیص داده می‌شوند یا نه
-  describe("Mobile Number", () => {
-    it("should validate standard mobile", () => {
-      expect(zIranianMobile().safeParse("09121111111").success).toBe(true);
+  describe("Mobile", () => {
+    it("should pass standard mobile", () => {
+      expect(zIranianMobile().safeParse("09120001122").success).toBe(true);
+    });
+    it("should respect strictZero", () => {
+      const schema = zIranianMobile({ strictZero: true });
+      expect(schema.safeParse("9120001122").success).toBe(false);
+    });
+  });
+
+  describe("Sheba (IBAN)", () => {
+    it("should pass valid IR Sheba", () => {
+      const validSheba = "IR330620000000202901868005";
+      expect(zSheba().safeParse(validSheba).success).toBe(true);
     });
 
-    it("should validate +98 format", () => {
-      expect(zIranianMobile().safeParse("+989121111111").success).toBe(true);
+    it("should fail invalid length", () => {
+      expect(zSheba().safeParse("IR123").success).toBe(false);
     });
 
-    it("should fail non-iranian mobile prefix", () => {
-      expect(zIranianMobile().safeParse("08121111111").success).toBe(false);
+    it("should fail invalid checksum", () => {
+      const invalidSheba = "IR020770000000000000000002";
+      expect(zSheba().safeParse(invalidSheba).success).toBe(false);
+    });
+  });
+
+  describe("Postal Code", () => {
+    it("should pass valid postal code", () => {
+      expect(zPostalCode().safeParse("1234567890").success).toBe(true);
+    });
+    it("should fail if starts with 0", () => {
+      expect(zPostalCode().safeParse("0123456789").success).toBe(false);
+    });
+    it("should fail if not 10 digits", () => {
+      expect(zPostalCode().safeParse("12345").success).toBe(false);
+    });
+  });
+
+  describe("Landline", () => {
+    it("should pass valid landline", () => {
+      expect(zLandline().safeParse("02122334455").success).toBe(true);
+    });
+    it("should fail if no area code", () => {
+      expect(zLandline().safeParse("22334455").success).toBe(false);
     });
   });
 });

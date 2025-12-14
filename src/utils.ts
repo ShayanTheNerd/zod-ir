@@ -1,9 +1,8 @@
 export function isMelliCode(code: string): boolean {
   if (!/^\d{10}$/.test(code)) return false;
-
-  const check = parseInt(code[9]);
   if (/^(\d)\1+$/.test(code)) return false;
 
+  const check = parseInt(code[9]);
   const sum =
     code
       .substring(0, 9)
@@ -60,25 +59,28 @@ export function isIranianMobile(
 export function isSheba(code: string): boolean {
   const iban = code.toUpperCase().replace(/[\-\s]/g, "");
 
-  if (iban.length !== 26) return false;
-  if (!iban.startsWith("IR")) return false;
+  if (iban.length !== 26 || !iban.startsWith("IR")) return false;
 
-  const newStr = iban.substring(4) + "1827" + iban.substring(2, 4);
+  const newStr = iban.substring(4) + iban.substring(0, 4);
 
-  const remainder = Array.from(newStr)
-    .map((c) => parseInt(c, 36))
-    .reduce((remainder, value) => {
-      const v = value < 10 ? value : value;
-      return (Number(remainder + "" + v) % 97).toString();
-    }, "");
+  const numericString = newStr
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      return code >= 48 && code <= 57 ? char : (code - 55).toString();
+    })
+    .join("");
 
-  return parseInt(remainder) === 1;
+  try {
+    const remainder = BigInt(numericString) % BigInt(97);
+    return remainder === BigInt(1);
+  } catch {
+    return false;
+  }
 }
 
 export function isPostalCode(code: string): boolean {
-  if (!/^\d{10}$/.test(code)) return false;
-  if (code.startsWith("0")) return false;
-  return true;
+  return /^[1-9]\d{9}$/.test(code);
 }
 
 export function isLandline(code: string): boolean {
