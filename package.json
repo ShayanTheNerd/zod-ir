@@ -40,7 +40,15 @@
     "react-hook-form",
     "nextjs"
   ],
-  "author": "Your Name",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Reza-kh80/zod-ir.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Reza-kh80/zod-ir/issues"
+  },
+  "homepage": "https://github.com/Reza-kh80/zod-ir#readme",
+  "author": "Reza kheradmandi <r.kheradmandi70@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "tsup": "^8.0.0",
