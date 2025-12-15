@@ -46,6 +46,7 @@ yarn add zod zod-ir
 Usage 🚀
 1. Basic Validation
 
+```bash
 import { z } from "zod";
 import { 
   zMelliCode, 
@@ -92,6 +93,7 @@ if (!result.success) {
 
 
 2. Usage with React Hook Form 📋
+```bash
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -114,5 +116,14 @@ export default function MyForm() {
     </form>
   );
 }
+
+API Reference 📚
+Validator	Description	Options
+zMelliCode	National ID validation	message, locale
+zCardNumber	Bank Card (Luhn) validation	message, locale
+zIranianMobile	Mobile Number validation	strictZero, message, locale
+zSheba	IBAN (Sheba) validation	message, locale
+zPostalCode	Postal Code validation	message, locale
+zLandline	Landline phone validation	message, locale
 
 
