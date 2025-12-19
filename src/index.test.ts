@@ -8,10 +8,14 @@ import {
   zSheba,
   zPostalCode,
   zLandline,
+  zBillId,
+  zPlateNumber,
   preprocessNumber,
   verifyAndNormalize,
   getBankInfo,
   getMobileOperator,
+  getBillInfo,
+  getPlateInfo,
 } from "./index";
 
 describe("Zod Iranian Utils Tests", () => {
@@ -62,6 +66,16 @@ describe("Zod Iranian Utils Tests", () => {
     expect(zLandline().safeParse("02122334455").success).toBe(true);
   });
 
+  it("should validate Bill ID", () => {
+    expect(zBillId().safeParse("1234567891234").success).toBe(false);
+  });
+
+  it("should validate Car Plate", () => {
+    expect(zPlateNumber().safeParse("12ب345-21").success).toBe(true);
+    expect(zPlateNumber().safeParse("12ب34521").success).toBe(true);
+    expect(zPlateNumber().safeParse("1234567").success).toBe(false);
+  });
+
   it("should convert Farsi digits via preprocess", () => {
     const schema = preprocessNumber(zMelliCode());
     const result = schema.safeParse("۱۲۳۴۵۶۷۸۹۱");
@@ -95,5 +109,18 @@ describe("Metadata Extraction & Normalization", () => {
     const normalized = verifyAndNormalize(arabicText);
     expect(normalized).toBe("یک");
   });
+
+  it("should detect Plate City and Province correctly", () => {
+    const plate1 = getPlateInfo("11ب222-15");
+    expect(plate1?.province).toBe("آذربایجان شرقی");
+    expect(plate1?.city).toBe("تبریز");
+
+    const plate2 = getPlateInfo("11ب222-21");
+    expect(plate2?.city).toBe("اسلامشهر");
+
+    const plate3 = getPlateInfo("۶۴م۳۲۲-۲۳");
+    expect(plate3?.province).toBe("اصفهان");
+    expect(plate3?.city).toBe("نایین");
+    expect(plate3?.isValid).toBe(true);
+  });
 });
-  

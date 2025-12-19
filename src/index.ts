@@ -8,9 +8,18 @@ import {
   isSheba,
   isPostalCode,
   isLandline,
+  isBillIdValid,
+  isPaymentIdValid,
+  isPlateNumber,
   verifyAndNormalize,
   getBankInfo,
   getMobileOperator,
+  getBillInfo,
+  getPlateInfo,
+  type BankInfo,
+  type OperatorInfo,
+  type BillInfo,
+  type PlateInfo,
 } from "./utils";
 import { getMessage, BaseOptions } from "./constants";
 
@@ -63,6 +72,21 @@ export const zLandline = (options?: BaseOptions) =>
     message: getMessage("landline", options),
   });
 
+export const zBillId = (options?: BaseOptions) =>
+  z.string().refine((val) => isBillIdValid(val), {
+    message: getMessage("billId", options),
+  });
+
+export const zPaymentId = (options?: BaseOptions) =>
+  z.string().refine((val) => val.length >= 6 && val.length <= 13, {
+    message: getMessage("paymentId", options),
+  });
+
+export const zPlateNumber = (options?: BaseOptions) =>
+  z.string().refine((val) => isPlateNumber(val), {
+    message: getMessage("plateNumber", options),
+  });
+
 export const preprocessNumber = (schema: z.ZodTypeAny) =>
   z.preprocess((val) => {
     if (typeof val === "string") {
@@ -80,7 +104,17 @@ export {
   isSheba,
   isPostalCode,
   isLandline,
+  isBillIdValid,
+  isPaymentIdValid,
+  isPlateNumber,
   verifyAndNormalize,
   getBankInfo,
   getMobileOperator,
+  getBillInfo,
+  getPlateInfo,
+  type BankInfo,
+  type OperatorInfo,
+  type BillInfo,
+  type PlateInfo,
+  type BaseOptions,
 };

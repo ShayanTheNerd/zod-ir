@@ -8,6 +8,9 @@ export const ERROR_MESSAGES = {
     sheba: "شماره شبا نامعتبر است",
     postalCode: "کد پستی نامعتبر است",
     landline: "شماره تلفن ثابت نامعتبر است",
+    billId: "شناسه قبض نامعتبر است",
+    paymentId: "شناسه پرداخت نامعتبر است",
+    plateNumber: "پلاک خودرو نامعتبر است",
   },
   en: {
     melliCode: "Invalid national code",
@@ -18,6 +21,9 @@ export const ERROR_MESSAGES = {
     sheba: "Invalid Sheba (IBAN) number",
     postalCode: "Invalid postal code",
     landline: "Invalid landline number",
+    billId: "Invalid Bill ID",
+    paymentId: "Invalid Payment ID",
+    plateNumber: "Invalid License Plate",
   },
 } as const;
 
