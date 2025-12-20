@@ -1,27 +1,28 @@
 import { z } from "zod";
+import { verifyAndNormalize } from "./utils/helpers";
+import { getMessage, BaseOptions } from "./locales";
+
+import { isMelliCode, isShenaseMelli, isPassport } from "./modules/identity";
 import {
-  isMelliCode,
-  isShenaseMelli,
-  isPassport,
   isCardNumber,
-  isIranianMobile,
   isSheba,
+  getBankInfo,
+  type BankInfo,
+} from "./modules/financial";
+import {
+  isIranianMobile,
+  getMobileOperator,
   isPostalCode,
   isLandline,
+  type OperatorInfo,
+} from "./modules/contact";
+import { isPlateNumber, getPlateInfo, type PlateInfo } from "./modules/vehicle";
+import {
   isBillIdValid,
   isPaymentIdValid,
-  isPlateNumber,
-  verifyAndNormalize,
-  getBankInfo,
-  getMobileOperator,
   getBillInfo,
-  getPlateInfo,
-  type BankInfo,
-  type OperatorInfo,
   type BillInfo,
-  type PlateInfo,
-} from "./utils";
-import { getMessage, BaseOptions } from "./constants";
+} from "./modules/bill";
 
 export const zMelliCode = (options?: BaseOptions) =>
   z.string().refine((val) => isMelliCode(val), {
@@ -52,9 +53,7 @@ export const zIranianMobile = (options?: MobileOptions) =>
     .string()
     .refine(
       (val) => isIranianMobile(val, { strictZero: options?.strictZero }),
-      {
-        message: getMessage("mobile", options),
-      }
+      { message: getMessage("mobile", options) }
     );
 
 export const zSheba = (options?: BaseOptions) =>
@@ -96,22 +95,22 @@ export const preprocessNumber = (schema: z.ZodTypeAny) =>
   }, schema);
 
 export {
+  verifyAndNormalize,
   isMelliCode,
   isShenaseMelli,
   isPassport,
   isCardNumber,
-  isIranianMobile,
   isSheba,
+  getBankInfo,
+  isIranianMobile,
+  getMobileOperator,
   isPostalCode,
   isLandline,
+  isPlateNumber,
+  getPlateInfo,
   isBillIdValid,
   isPaymentIdValid,
-  isPlateNumber,
-  verifyAndNormalize,
-  getBankInfo,
-  getMobileOperator,
   getBillInfo,
-  getPlateInfo,
   type BankInfo,
   type OperatorInfo,
   type BillInfo,
