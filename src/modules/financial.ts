@@ -1,5 +1,5 @@
 import { verifyAndNormalize } from "../utils/helpers";
-import { BANKS } from "../data/constants";
+import { BANKS, SHEBA_CODES } from "../data/constants";
 
 export type BankInfo = {
   name: string;
@@ -62,6 +62,27 @@ export function isSheba(code: string): boolean {
   }
 }
 
+function getBankFromSheba(sheba: string): BankInfo {
+  const normalizedSheba = sheba.toUpperCase();
+  if (normalizedSheba.length < 7) return null;
+
+  const bankCode = normalizedSheba.substring(4, 7);
+
+  const cardBin = SHEBA_CODES[bankCode];
+
+  if (cardBin) {
+    // @ts-ignore
+    const bankData = BANKS[cardBin];
+    if (bankData) {
+      return {
+        ...bankData,
+        formatted: normalizedSheba,
+      };
+    }
+  }
+  return null;
+}
+
 export type FinancialInfo = {
   type: "card" | "sheba" | "unknown";
   value: string;
@@ -74,11 +95,12 @@ export function getFinancialInfo(value: string): FinancialInfo {
 
   if (normalized.toUpperCase().startsWith("IR")) {
     const isValid = isSheba(normalized);
+    const bank = getBankFromSheba(normalized);
     return {
       type: "sheba",
       value: normalized.toUpperCase(),
       isValid,
-      bank: null,
+      bank,
     };
   }
 
