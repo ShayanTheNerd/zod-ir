@@ -20,8 +20,12 @@ import {
   isIranianMobile,
   getMobileOperator,
   isPostalCode,
+  getPostalCodeInfo,
   isLandline,
+  getLandlineInfo,
   type OperatorInfo,
+  type PostalCodeInfo,
+  type LandlineInfo,
 } from "./modules/contact";
 import { isPlateNumber, getPlateInfo, type PlateInfo } from "./modules/vehicle";
 import {
@@ -137,7 +141,9 @@ export {
   isIranianMobile,
   getMobileOperator,
   isPostalCode,
+  getPostalCodeInfo,
   isLandline,
+  getLandlineInfo,
   isPlateNumber,
   getPlateInfo,
   isBillIdValid,
@@ -153,6 +159,8 @@ export {
   type JalaliDateInfo,
   type BankInfo,
   type OperatorInfo,
+  type PostalCodeInfo,
+  type LandlineInfo,
   type BillInfo,
   type PlateInfo,
   type BaseOptions,

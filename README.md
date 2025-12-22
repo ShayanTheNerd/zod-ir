@@ -19,6 +19,15 @@
     <a href="https://github.com/Reza-kh80/zod-ir/blob/main/LICENSE">
       <img src="https://img.shields.io/npm/l/zod-ir?style=flat-square&color=f59e0b" alt="license" />
     </a>
+    <a href="https://github.com/Reza-kh80/zod-ir/stargazers">
+      <img src="https://img.shields.io/github/stars/Reza-kh80/zod-ir?style=flat-square&label=stars&color=eab308" alt="GitHub stars" />
+    </a>
+    <a href="https://github.com/Reza-kh80/zod-ir/actions">
+      <img src="https://img.shields.io/badge/tests-passing-2ea44f?style=flat-square" alt="Tests" />
+    </a>
+    <a href="https://zod.dev/?id=ecosystem">
+      <img src="https://img.shields.io/badge/featured%20in-zod%20docs-3068b7?style=flat-square&logo=zod&logoColor=white" alt="Zod Ecosystem" />
+    </a>
   </p>
 </div>
 
@@ -53,7 +62,47 @@ yarn add zod zod-ir
 
 ## Usage Examples 💡
 
-1. Smart Financial Validation (New 🌟)
+1. Smart Contact & Address (New 🌟)
+
+   Validate Landlines and Postal Codes, and automatically extract Province/City in both Persian and English.
+
+```typescript
+import { z } from "zod";
+import {
+  zLandline,
+  zPostalCode,
+  getLandlineInfo,
+  getPostalCodeInfo,
+} from "zod-ir";
+
+// 1. Validation Schema
+const schema = z.object({
+  phone: zLandline({ message: "Invalid landline number" }),
+  zip: zPostalCode(),
+});
+
+// 2. Extract Metadata from Landline
+const phoneInfo = getLandlineInfo("02122334455");
+/* Output:
+{
+  province: "Tehran",
+  city: "Tehran",
+  province_fa: "تهران",
+  city_fa: "تهران"
+}
+*/
+
+// 3. Extract Metadata from Postal Code (Smart Range Matching)
+const zipInfo = getPostalCodeInfo("8391853612");
+/* Output:
+{
+  province: { name: "اصفهان", slug: "Isfahan" },
+  city: { name_fa: "نائین", name_en: "Naein" }
+}
+*/
+```
+
+2. Smart Financial Validation (New 🌟)
 
    Don't ask users for "Card" or "Sheba" separately. Use zFinancial to accept both!
 
@@ -87,7 +136,7 @@ console.log(info);
 */
 ```
 
-2. Crypto Wallet Validation (New 💎)
+3. Crypto Wallet Validation (New 💎)
 
    Perfect for Fintech and Exchange apps. Supports TRC20 (USDT), ERC20, and BTC.
 
@@ -115,7 +164,7 @@ const details = getCryptoInfo("TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t");
 */
 ```
 
-3. Jalali Date Validation (New 📅)
+4. Jalali Date Validation (New 📅)
 
    Validates Persian dates mathematically (checking days in month & leap years).
 
@@ -133,7 +182,7 @@ schema.parse({ birthDate: "1403/12/30" });
 schema.parse({ birthDate: "1402/12/30" });
 ```
 
-4. Comprehensive Form Example
+5. Comprehensive Form Example
 
    A full registration form handling Auto-fix (Persian digits), Mobile, and National Code.
 
@@ -175,6 +224,8 @@ zod-ir isn't just for validation. It provides rich metadata for your UI.
 | `getBillInfo(id, payId)` | `{ type, amount... }` | Bill Type (Water/Gas), Amount calculation, Validity. |
 | `getPlateInfo(plate)` | `{ province, city }` | Province and City of the license plate. |
 | `getJalaliDateInfo(date)` | `{ year, month, isLeap }` | Deconstructs Jalali date & checks leap year. |
+| `getLandlineInfo(num)` | `{ province, city... }` | Returns Province/City (FA & EN) for landlines. |
+| `getPostalCodeInfo(code)` | `{ province, city }` | Returns Province/City based on postal code. |
 
 ## API Reference 📚
 
@@ -186,6 +237,7 @@ Identity & Contact
 | `zPassport` | Iranian Passport |
 | `zIranianMobile` | Mobile (09xx, +989xx) |
 | `zPostalCode` | 10-digit Postal Code |
+| `zLandline` | Landline Phone (021xx...) |
 
 Financial & Assets
 | Validator | Description |
@@ -204,7 +256,7 @@ Financial & Assets
 Contributions are welcome! This project uses PNPM.
 
 ```bash
-git clone https://github.com/Reza-kh80/zod-ir.git
+git clone [https://github.com/Reza-kh80/zod-ir.git](https://github.com/Reza-kh80/zod-ir.git)
 pnpm install
 pnpm test
 ```
