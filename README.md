@@ -35,18 +35,23 @@
 
 ## Why zod-ir? 🚀
 
-Building forms in Iran requires specific validations (National Code algorithm, Bank Card Luhn, etc.). `zod-ir` brings these natively into **Zod**, with added superpowers like **Metadata Extraction** (Bank Names, Logos, Bill Types).
+Building forms in Iran requires specific validations (National Code algorithm, Bank Card Luhn, etc.). `zod-ir` brings these natively into **Zod**, but goes beyond simple validation. It focuses on **Data Extraction** and **Developer Experience**.
 
 ### Key Features ✨
 
-- 🧠 **Smart Financial Validation:** Auto-detects **Card Number** vs **Sheba (IBAN)** and returns Bank Info & Logo.
-- 📅 **Jalali Date (Solar Hijri):** Validates Persian dates with precise **Leap Year (Kabise)** calculation.
-- 💎 **Crypto Support:** Validates **TRC20 (Tether)**, **ERC20**, and **Bitcoin** addresses.
-- 💳 **Banking:** Validates Card Numbers & Sheba (ISO 7064).
-- 🚗 **Vehicle:** Validates License Plates and detects **Province/City**.
-- 🧾 **Utility Bills:** Validates Bill ID/Payment ID and calculates the **Amount**.
-- 🆔 **Identity:** National Code (Melli Code), Legal Person ID (Shenase Melli), Passport.
-- 📱 **Contact:** Mobile (MCI, Irancell...), Landline, Postal Code.
+- 🧠 **Smart Extraction:** Don't just validate; extract metadata! (e.g., Get Bank Name from Card, City from Landline/Postal Code).
+- 🛠 **Standalone & Reusable:** Use validators inside Zod schemas OR as standalone utility functions in your utils/backend.
+- ⚡ **Zero Dependencies:** No heavy dependencies. Lightweight and Tree-shakeable.
+- 🔗 **Peer Dependency Architecture:** Fully compatible with your existing Zod version (v3+).
+- 🧪 **Battle-Tested:** 100% Test Coverage for critical algorithms (National Code, IBAN, etc.).
+
+### Feature Highlights
+
+- **Smart Financial:** Auto-detects **Card Number** vs **Sheba (IBAN)** and returns Bank Info & Logo.
+- **Jalali Date:** Validates Persian dates with precise **Leap Year (Kabise)** calculation.
+- **Crypto Support:** Native validation for **TRC20**, **ERC20**, and **Bitcoin** (No extra libs).
+- **Vehicle:** Validates License Plates and detects **Province/City**.
+- **Contact:** Mobile (MCI, Irancell...), **Landline (New ✨)**, Postal Code (with **Smart City Detection**).
 
 ---
 
@@ -60,7 +65,29 @@ pnpm add zod zod-ir
 yarn add zod zod-ir
 ```
 
-## Usage Examples 💡
+## Usage: Standalone Mode (Utilities) 🛠️
+
+You don't need to use Zod! zod-ir exports all validation logic as pure functions. Perfect for backend utilities or non-form logic.
+
+```typescript
+import { isMelliCode, getBankInfo, getLandlineInfo } from "zod-ir";
+
+// 1. Validate National Code anywhere
+if (isMelliCode("0023456789")) {
+  console.log("Valid user!");
+}
+
+// 2. Get Bank Details directly
+const bank = getBankInfo("6219861012345678");
+console.log(bank.name); // "Saman"
+console.log(bank.color); // "#46a0e6"
+
+// 3. Extract Location from Phone
+const location = getLandlineInfo("02122334455");
+console.log(location.province_fa); // "تهران"
+```
+
+## Usage: Zod Schema Mode 💡
 
 1. Smart Contact & Address (New 🌟)
 
@@ -136,7 +163,7 @@ console.log(info);
 */
 ```
 
-3. Crypto Wallet Validation (New 💎)
+3. Crypto Wallet Validation
 
    Perfect for Fintech and Exchange apps. Supports TRC20 (USDT), ERC20, and BTC.
 
@@ -164,7 +191,7 @@ const details = getCryptoInfo("TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t");
 */
 ```
 
-4. Jalali Date Validation (New 📅)
+4. Jalali Date Validation
 
    Validates Persian dates mathematically (checking days in month & leap years).
 
