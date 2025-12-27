@@ -1,7 +1,7 @@
 <div align="center">
   <img src="zod-ir-logo.png" width="250"  alt="zod-ir logo" style="border-radius: 20px !important" />
   <p>
-    <strong>The Ultimate Zod Extension for Iranian Data Structures</strong>
+    <strong>The Ultimate Zod Utility for Iranian Data Structures</strong>
   </p>
   <p>
     Validation for National Code, Bank Cards, Sheba, Bills, License Plates, Crypto, and more.
@@ -291,6 +291,13 @@ pnpm test
 ## Credits 🙏
 
 - Bank and Operator logos are courtesy of [Zegond's Logos Project](https://github.com/zegond).
+
+## Support ☕
+
+`zod-ir` is an open-source project and free to use. If it saved you some time and you'd like to say thanks, you can support its development via crypto. It's completely optional but highly appreciated!
+
+- **USDT (TRC20) / TRX:** `TWtnFa4xpvH9BvciSzw4hqXUDCibWhcYxX`
+- **Bitcoin:** `bc1qf2ry7mpnvncwapgu0al3wkxm4jxecac3s3pmf0`
 
 ## License
 
