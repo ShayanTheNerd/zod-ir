@@ -17,7 +17,7 @@ The following steps will get you setup to contribute changes to this repo:
 2. **Clone** your forked repo:
 
    ```bash
-   git clone [https://github.com/YOUR_USERNAME/zod-ir.git](https://github.com/YOUR_USERNAME/zod-ir.git)
+   git clone https://github.com/Reza-kh80/zod-ir.git
    cd zod-ir
 
    ```
