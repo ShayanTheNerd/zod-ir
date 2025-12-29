@@ -44,6 +44,11 @@ import {
   getCryptoInfo,
   type CryptoInfo,
 } from "./modules/crypto";
+import {
+  transformToCurrency,
+  formatCurrency,
+  numberToText,
+} from "./modules/currency";
 
 export const zMelliCode = (options?: BaseOptions) =>
   z.string().refine((val) => isMelliCode(val), {
@@ -64,6 +69,63 @@ export const zCardNumber = (options?: BaseOptions) =>
   z.string().refine((val) => isCardNumber(val), {
     message: getMessage("cardNumber", options),
   });
+
+export const zToman = (
+  options?: { min?: number; max?: number } & BaseOptions
+) =>
+  z.preprocess(
+    (val) =>
+      typeof val === "string" || typeof val === "number"
+        ? transformToCurrency(val)
+        : val,
+    z
+      .number({ invalid_type_error: getMessage("currency", options) })
+      .min(options?.min ?? 0, getMessage("currencyMin", options))
+      .max(
+        options?.max ?? Number.MAX_SAFE_INTEGER,
+        getMessage("currencyMax", options)
+      )
+  );
+
+export const zRial = zToman;
+
+export const zCurrencyRich = (
+  options?: { min?: number; max?: number } & BaseOptions
+) =>
+  z
+    .string()
+    .or(z.number())
+    .transform((val, ctx) => {
+      const num = transformToCurrency(val);
+
+      if (num === null || isNaN(num)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: getMessage("currency", options),
+        });
+        return z.NEVER;
+      }
+
+      if (options?.min !== undefined && num < options.min) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: getMessage("currencyMin", options),
+        });
+      }
+
+      if (options?.max !== undefined && num > options.max) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: getMessage("currencyMax", options),
+        });
+      }
+
+      return {
+        value: num,
+        formatted: formatCurrency(num),
+        text: numberToText(num),
+      };
+    });
 
 interface MobileOptions extends BaseOptions {
   strictZero?: boolean | "optional";
@@ -155,6 +217,9 @@ export {
   isFinancialValue,
   isCryptoAddress,
   getCryptoInfo,
+  transformToCurrency,
+  formatCurrency,
+  numberToText,
   type CryptoInfo,
   type JalaliDateInfo,
   type BankInfo,

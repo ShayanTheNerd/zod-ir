@@ -13,7 +13,10 @@ export const ERROR_MESSAGES = {
     plateNumber: "پلاک خودرو نامعتبر است",
     date: "تاریخ وارد شده نامعتبر است",
     financial: "شماره کارت یا شبا معتبر نیست",
-    crypto: "آدرس کیف پول معتبر نیست"
+    crypto: "آدرس کیف پول معتبر نیست",
+    currency: "فرمت مبلغ وارد شده صحیح نیست",
+    currencyMin: "مبلغ کمتر از حد مجاز است",
+    currencyMax: "مبلغ بیشتر از حد مجاز است",
   },
   en: {
     melliCode: "Invalid national code",
@@ -29,7 +32,10 @@ export const ERROR_MESSAGES = {
     plateNumber: "Invalid License Plate",
     date: "Invalid Date",
     financial: "Invalid Sheba (IBAN) number or card number",
-    crypto: "Invalid Wallet address"
+    crypto: "Invalid Wallet address",
+    currency: "Invalid currency format",
+    currencyMin: "Amount is below the minimum limit",
+    currencyMax: "Amount exceeds the maximum limit",
   },
 } as const;
 

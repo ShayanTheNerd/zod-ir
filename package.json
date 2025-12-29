@@ -1,6 +1,6 @@
 {
   "name": "zod-ir",
-  "version": "1.5.6",
+  "version": "1.6.0",
   "description": "Essential Zod validators for Iranian specific data (National Code, Card Number, Mobile)",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -24,7 +24,7 @@
   "files": [
     "dist"
   ],
-	"type": "module",
+  "type": "module",
   "packageManager": "pnpm@10.26.2",
   "scripts": {
     "test": "vitest run",

@@ -239,6 +239,32 @@ const UserSchema = z.object({
 });
 ```
 
+6. Smart Currency 💰 [New]
+
+Automatically validates, parses, and formats currency input. It handles Persian text, numbers, and formatted strings (mixed).
+
+```typescript
+import { zToman, transformToCurrency, numberToText } from "zod-ir";
+
+const schema = z.object({
+  // Accepts inputs like: "2.5 میلیون", "2,500,000", "دو میلیون و پانصد"
+  price: zToman({
+    min: 1000,
+    max: 50_000_000,
+    message: "Amount must be between 1,000 and 50 Million Toman",
+  }),
+});
+
+// --- Utility Functions for UI ---
+
+// Convert Text/Mixed to Number (for DB storage)
+console.log(transformToCurrency("2 میلیون و پانصد")); // 2500000
+console.log(transformToCurrency("سی صد")); // 300 (Auto-fixes typos)
+
+// Convert Number to Persian Text (for UI display)
+console.log(numberToText(2500000)); // "دو میلیون و پانصد هزار"
+```
+
 ## Metadata Helpers 🛠️
 
 zod-ir isn't just for validation. It provides rich metadata for your UI.
@@ -277,6 +303,7 @@ Financial & Assets
 | `zPaymentId` | Utility Payment ID |
 | `zPlateNumber` | Vehicle License Plate |
 | `zJalaliDate` | Persian Date (YYYY/MM/DD) |
+| `zToman` | Automatically validates currency input |
 
 ## Contributing
 
